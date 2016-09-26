@@ -2,20 +2,32 @@
 var gallery = document.getElementById("gallery");
 // Записываем в переменную по id отображение картинки
 var show = document.getElementById("show");
+var currentImage = null;
+
+;(function() {
+    for (var i = 1; i <= 12; i++) {
+        var li = document.createElement('li');
+        var img = document.createElement('img');
+        img.src = "images/" + i + ".jpg";
+        li.appendChild(img);
+        gallery.appendChild(li);
+    }
+})();
 
 gallery.addEventListener("mousemove", function(e) {
     // проверяем тип обьекта
     if ( e.target.nodeName == 'IMG' ) {
+        if(currentImage != e.target.attributes.src.nodeValue) {
+            show.innerText = "";
+
+            var image = document.createElement('img');
+            currentImage = image.src = e.target.attributes.src.nodeValue;
+
+            show.appendChild(image);
+        }
         // задаем позицию
         show.style.top = e.y + 10 + "px";
         show.style.left = e.x + 10 + "px";
-
-        // выбираем изображение из блока c id="show"
-        var image = show.querySelector('img');
-        // переписываю путь к картинке
-        image.src = e.target.attributes.src.nodeValue;
-
-        // отображаем блок картинки
         show.style.display = "block";
     }
     // функция отвода мыши с блока gallery
